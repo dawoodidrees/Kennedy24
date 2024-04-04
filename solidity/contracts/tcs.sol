@@ -1488,14 +1488,14 @@ contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
         OFF,
         ON
     }
-    ContractState public contractState = ContractState.OFF;
+    ContractState public contractState = ContractState.ON;
 
     string public placeholderURI;
     string public baseURI;
 
-    address public signer;
+    address public signer = 0x80E4929c869102140E69550BBECC20bEd61B080c;
 
-    address public USDC;
+    address public USDC = 0x14196F08a4Fa0B66B7331bC40dd6bCd8A1dEeA9F;
 
     mapping(address => uint256) public nonce;
 
@@ -1693,16 +1693,14 @@ contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
      * saleInfo[0]: contractState
      * saleInfo[1]: maxSale (total available tokens)
      * saleInfo[2]: totalMinted
-     * saleInfo[3]: tokenPrice
-     * saleInfo[4]: numberMinted (by given address)
-     * saleInfo[5]: presaleAllowance
+     * saleInfo[3]: numberMinted (by given address)
+     * saleInfo[4]: presaleAllowance
      */
-    function saleInfo(address addr) public view virtual returns (uint256[6] memory) {
+    function saleInfo(address addr) public view virtual returns (uint256[5] memory) {
         return [
             uint256(contractState),
             maxSalePlusOne - 1,
             _totalMinted(),
-            tokenPrice,
             _numberMinted(addr),
             allowancePlusOne - 1
         ];
