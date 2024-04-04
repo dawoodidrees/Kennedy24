@@ -4,58 +4,6 @@ pragma solidity ^0.8.13;
 /// @title Tokenized Campaign Solutions
 /// @author Andre Costa @ MyWeb3Startup.com
 
-// OpenZeppelin Contracts v4.4.1 (utils/cryptography/MerkleProof.sol)
-
-pragma solidity ^0.8.0;
-
-/**
- * @dev These functions deal with verification of Merkle Trees proofs.
- *
- * The proofs can be generated using the JavaScript library
- * https://github.com/miguelmota/merkletreejs[merkletreejs].
- * Note: the hashing algorithm should be keccak256 and pair sorting should be enabled.
- *
- * See `test/utils/cryptography/MerkleProof.test.js` for some examples.
- */
-library MerkleProof {
-    /**
-     * @dev Returns true if a `leaf` can be proved to be a part of a Merkle tree
-     * defined by `root`. For this, a `proof` must be provided, containing
-     * sibling hashes on the branch from the leaf to the root of the tree. Each
-     * pair of leaves and each pair of pre-images are assumed to be sorted.
-     */
-    function verify(
-        bytes32[] memory proof,
-        bytes32 root,
-        bytes32 leaf
-    ) internal pure returns (bool) {
-        return processProof(proof, leaf) == root;
-    }
-
-    /**
-     * @dev Returns the rebuilt hash obtained by traversing a Merklee tree up
-     * from `leaf` using `proof`. A `proof` is valid if and only if the rebuilt
-     * hash matches the root of the tree. When processing the proof, the pairs
-     * of leafs & pre-images are assumed to be sorted.
-     *
-     * _Available since v4.4._
-     */
-    function processProof(bytes32[] memory proof, bytes32 leaf) internal pure returns (bytes32) {
-        bytes32 computedHash = leaf;
-        for (uint256 i = 0; i < proof.length; i++) {
-            bytes32 proofElement = proof[i];
-            if (computedHash <= proofElement) {
-                // Hash(current computed hash + current element of the proof)
-                computedHash = keccak256(abi.encodePacked(computedHash, proofElement));
-            } else {
-                // Hash(current element of the proof + current computed hash)
-                computedHash = keccak256(abi.encodePacked(proofElement, computedHash));
-            }
-        }
-        return computedHash;
-    }
-}
-
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/IERC165.sol)
 
 pragma solidity ^0.8.0;
@@ -1454,23 +1402,91 @@ abstract contract Ownable is Context {
     }
 }
 
+/**
+ * @dev Interface of the ERC-20 standard as defined in the ERC.
+ */
+interface IERC20 {
+    /**
+     * @dev Emitted when `value` tokens are moved from one account (`from`) to
+     * another (`to`).
+     *
+     * Note that `value` may be zero.
+     */
+    event Transfer(address indexed from, address indexed to, uint256 value);
+
+    /**
+     * @dev Emitted when the allowance of a `spender` for an `owner` is set by
+     * a call to {approve}. `value` is the new allowance.
+     */
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+
+    /**
+     * @dev Returns the value of tokens in existence.
+     */
+    function totalSupply() external view returns (uint256);
+
+    /**
+     * @dev Returns the value of tokens owned by `account`.
+     */
+    function balanceOf(address account) external view returns (uint256);
+
+    /**
+     * @dev Moves a `value` amount of tokens from the caller's account to `to`.
+     *
+     * Returns a boolean value indicating whether the operation succeeded.
+     *
+     * Emits a {Transfer} event.
+     */
+    function transfer(address to, uint256 value) external returns (bool);
+
+    /**
+     * @dev Returns the remaining number of tokens that `spender` will be
+     * allowed to spend on behalf of `owner` through {transferFrom}. This is
+     * zero by default.
+     *
+     * This value changes when {approve} or {transferFrom} are called.
+     */
+    function allowance(address owner, address spender) external view returns (uint256);
+
+    /**
+     * @dev Sets a `value` amount of tokens as the allowance of `spender` over the
+     * caller's tokens.
+     *
+     * Returns a boolean value indicating whether the operation succeeded.
+     *
+     * IMPORTANT: Beware that changing an allowance with this method brings the risk
+     * that someone may use both the old and the new allowance by unfortunate
+     * transaction ordering. One possible solution to mitigate this race
+     * condition is to first reduce the spender's allowance to 0 and set the
+     * desired value afterwards:
+     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
+     *
+     * Emits an {Approval} event.
+     */
+    function approve(address spender, uint256 value) external returns (bool);
+
+    /**
+     * @dev Moves a `value` amount of tokens from `from` to `to` using the
+     * allowance mechanism. `value` is then deducted from the caller's
+     * allowance.
+     *
+     * Returns a boolean value indicating whether the operation succeeded.
+     *
+     * Emits a {Transfer} event.
+     */
+    function transferFrom(address from, address to, uint256 value) external returns (bool);
+}
+
 contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
     using Strings for uint256;
 
     uint256 public maxSalePlusOne = 2025;
-    uint256 public maxPresalePlusOne = 2025;
 
-    uint256 public tokenPrice = 0.01 ether;
-
-    uint256 public txLimitPlusOne = 11;
     uint256 public allowancePlusOne = 11;
-
-    bytes32 public merkleRootPresale;
 
     enum ContractState {
         OFF,
-        PRESALE,
-        PUBLIC
+        ON
     }
     ContractState public contractState = ContractState.OFF;
 
@@ -1478,6 +1494,8 @@ contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
     string public baseURI;
 
     address public signer;
+
+    address public USDC;
 
     mapping(address => uint256) public nonce;
 
@@ -1548,40 +1566,21 @@ contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
     //
 
     /**
-     * Public mint.
-     * @param quantity Amount of tokens to mint.
+     * Mint tokens.
+     * @notice This function is only available to those that have performed KYC.
      */
-    function mintPublic(uint256 quantity, address receiver)
+    function mint(uint256 donation, address receiver, uint8 _v, bytes32 _r, bytes32 _s)
         external
-        payable
-        noBots
-        isContractState(ContractState.PUBLIC)
-        withinMintLimit(quantity)
-        correctValue(tokenPrice * quantity)
+        isContractState(ContractState.ON)
+        withinMintLimit(1)
     {
-        require(_numberMinted(receiver) + quantity < allowancePlusOne, "Exceeds allowance");
-        require(quantity < txLimitPlusOne, "Exceeds transaction limit");
-        nonce[receiver]++;
-        _safeMint(msg.sender, quantity);
-    }
-
-    /**
-     * Mint tokens during the presale.
-     * @notice This function is only available to those on the allowlist.
-     * @param quantity The number of tokens to mint.
-     */
-    function mintPresale(uint256 quantity, address receiver, uint8 _v, bytes32 _r, bytes32 _s)
-        external
-        payable
-        noBots
-        isContractState(ContractState.PRESALE)
-        withinMintLimit(quantity)
-        correctValue(tokenPrice * quantity)
-    {
-        require(_numberMinted(receiver) + quantity < allowancePlusOne, "Exceeds allowance");
+        require(_numberMinted(receiver) + 1 < allowancePlusOne, "Exceeds allowance");
         require(isValidAccessMessage(receiver, _v, _r, _s), "Signature is Incorrect!");
+
+        IERC20(USDC).transferFrom(msg.sender, address(this), donation);
+
         nonce[receiver]++;
-        _safeMint(msg.sender, quantity);
+        _safeMint(msg.sender, 1);
     }
 
     /**
@@ -1618,14 +1617,6 @@ contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
     }
 
     /**
-     * Update token price.
-     * @param tokenPrice_ The new token price
-     */
-    function setTokenPrice(uint256 tokenPrice_) external onlyOwner {
-        tokenPrice = tokenPrice_;
-    }
-
-    /**
      * Update maximum number of tokens for sale.
      * @param maxSale The maximum number of tokens available for sale.
      */
@@ -1633,25 +1624,6 @@ contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
         uint256 maxSalePlusOne_ = maxSale + 1;
         require(maxSalePlusOne_ > _totalMinted(), "Must be above current supply!");
         maxSalePlusOne = maxSalePlusOne_;
-    }
-
-    /**
-     * Update maximum number of tokens for presale.
-     * @param maxPresale The maximum number of tokens available for presale.
-     */
-    function setMaxPresale(uint256 maxPresale) external onlyOwner {
-        uint256 maxPresalePlusOne_ = maxPresale + 1;
-        require(maxPresalePlusOne_ > _totalMinted(), "Must be above current supply!");
-        maxPresalePlusOne = maxPresalePlusOne_;
-    }
-
-    /**
-     * Update maximum number of tokens per transaction in public sale.
-     * @param txLimit The new transaction limit.
-     */
-    function setTxLimit(uint256 txLimit) external onlyOwner {
-        uint256 txLimitPlusOne_ = txLimit + 1;
-        txLimitPlusOne = txLimitPlusOne_;
     }
 
     /**
@@ -1671,12 +1643,11 @@ contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
     }
 
     /**
-     * Set the presale Merkle root.
-     * @dev The Merkle root is calculated from [address, allowance] pairs.
-     * @param merkleRoot_ The new merkle roo
+     * Update USDC.
+     * @param newAddress The new USDC address.
      */
-    function setMerkleRootPresale(bytes32 merkleRoot_) external onlyOwner {
-        merkleRootPresale = merkleRoot_;
+    function setUSDC(address newAddress) external onlyOwner {
+        USDC = newAddress;
     }
 
     /**
@@ -1725,17 +1696,15 @@ contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
      * saleInfo[3]: tokenPrice
      * saleInfo[4]: numberMinted (by given address)
      * saleInfo[5]: presaleAllowance
-     * saleInfo[6]: maxPresale (total available tokens during presale)
      */
-    function saleInfo(address addr) public view virtual returns (uint256[7] memory) {
+    function saleInfo(address addr) public view virtual returns (uint256[6] memory) {
         return [
             uint256(contractState),
             maxSalePlusOne - 1,
             _totalMinted(),
             tokenPrice,
             _numberMinted(addr),
-            allowancePlusOne - 1,
-            maxPresalePlusOne - 1
+            allowancePlusOne - 1
         ];
     }
 
@@ -1752,20 +1721,6 @@ contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
     /// @inheritdoc IERC165
     function supportsInterface(bytes4 interfaceId) public view virtual override(IERC165, ERC721A) returns (bool) {
         return ERC721A.supportsInterface(interfaceId);
-    }
-
-    /**
-     * Verify the Merkle proof is valid.
-     * @param root The Merkle root. Use the value stored in the contract
-     * @param leaf The leaf. A [address, availableAmt] pair
-     * @param proof The Merkle proof used to validate the leaf is in the root
-     */
-    function verify(
-        bytes32 root,
-        bytes32 leaf,
-        bytes32[] memory proof
-    ) public pure returns (bool) {
-        return MerkleProof.verify(proof, root, leaf);
     }
 
     /**
