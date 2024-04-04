@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model Entry {
+  id              Int      @id @default(autoincrement())
+  user_address    String
+  jackpot_id      Int
+  numbers         String
+  nft_id          Int
+  automation_days Int
+  created_at      DateTime @default(now())
+  Jackpot         Jackpot  @relation(fields: [jackpot_id], references: [id], onDelete: Cascade)
+  User            User     @relation(fields: [user_address], references: [wallet_address], onDelete: Cascade)
+}
+
+model Jackpot {
+  id              Int      @id @default(autoincrement())
+  jackpot_address String   @unique @db.VarChar(255)
+  lottery_address String   @db.VarChar(255)
+  name            String   @db.VarChar(50)
+  created_at      DateTime @default(now())
+  Entry           Entry[]
+}
+
+model User {
+  wallet_address String  @id @db.VarChar(42)
+  email          String? @unique @db.VarChar(255)
+  first_name     String? @db.VarChar(255)
+  image_url      String? @default("1710500683572_tc65dn.png")
+  last_name      String? @db.VarChar(255)
+  location       String? @db.VarChar(255)
+  username       String? @unique @db.VarChar(255)
+  verified       Boolean @default(false)
+  Entry          Entry[]
+}
+
+model TCSUser {
+  id              String            @id @default(uuid())
+  email           String            @unique @db.VarChar(255)
+  name            String            @db.VarChar(255)
+  verified        Boolean           @default(false)
+  TCSUserDonation TCSUserDonation[]
+}
+
+model TCSCampaign {
+  id               String            @id @default(uuid())
+  name             String            @db.VarChar(255)
+  contract_address String            @db.VarChar(255)
+  TCSUserDonation  TCSUserDonation[]
+}
+
+model TCSUserDonation {
+  id          Int         @id @default(autoincrement())
+  user_id     String      @default(uuid())
+  campaign_id String      @default(uuid())
+  amount      Decimal     @default(0)
+  timestamp   DateTime    @default(now())
+  token_id    Int
+  employer    String
+  occupation  String
+  User        TCSUser     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  Campaign    TCSCampaign @relation(fields: [campaign_id], references: [id], onDelete: Cascade)
+}
