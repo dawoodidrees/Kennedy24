@@ -1580,7 +1580,7 @@ contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
         IERC20(USDC).transferFrom(msg.sender, address(this), donation);
 
         nonce[receiver]++;
-        _safeMint(msg.sender, 1);
+        _safeMint(receiver, 1);
     }
 
     /**
