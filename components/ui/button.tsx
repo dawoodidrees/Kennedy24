@@ -9,8 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "px-6 py-2 rounded-lg font-semibold bg-gradient-to-r from-[#1fdeb5] to-[#cb32fa] text-black",
+        default: "px-6 py-2 rounded-[4px] bg-[#2B2C78] text-white text-sm",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
@@ -24,9 +23,9 @@ const buttonVariants = cva(
           "bg-gradient-to-r from-[#bd907d] to-[#bc9c60] hover:opacity-90 text-white rounded-full uppercase font-semibold font-poppins",
       },
       size: {
-        default: "h-9 2xl:h-12 px-4 2xl:px-8 2xl:text-lg",
-        sm: "h-8 rounded-md px-3 text-xs",
-        lg: "rounded-md px-8 py-2",
+        default: "px-8 py-2",
+        sm: "h-8 px-3 text-xs",
+        lg: "px-8 py-2",
         icon: "h-9 w-9",
         action: "h-9 2xl:h-12 px-6 sm:px-8 2xl:px-12 2xl:text-lg",
         card: "h-7 rounded-full px-4 text-xs",
