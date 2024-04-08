@@ -1,3 +1,15 @@
+"use client";
+
+import { useSession } from "next-auth/react";
+
 export default function Landing() {
-  return <></>;
+  const { data: session } = useSession();
+  if (session) {
+    return (
+      <p>
+        Signed in as {session?.user?.email} <br />
+      </p>
+    );
+  }
+  return <p>Not signed in</p>;
 }
