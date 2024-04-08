@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
   try {
-    const donations = await prisma.tCSUserDonation.findMany();
+    const donations = await prisma.userDonation.findMany();
     return new Response(JSON.stringify({ donations }), { status: 200 });
   } catch (error) {
     console.error(error);
@@ -20,8 +20,8 @@ export async function GET(request: NextRequest) {
 //   const body = await request.json();
 //   const apiKey = request.headers.get("x-api-key");
 //   try {
-//     if (apiKey === process.env.X_API_KEY) {
-//       const wallet = await prisma.tCSUserDonation.create({
+//     if (apiKey === process.env.ADMIN_API_KEY) {
+//       const wallet = await prisma.userDonation.create({
 //         data: {
 //           username: body.username,
 //           publicKey: body.publicKey,

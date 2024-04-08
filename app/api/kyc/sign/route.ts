@@ -899,7 +899,7 @@ export async function POST(request: NextRequest) {
   console.log({ body });
   const { collectionId, address } = body;
   console.log({ collectionId });
-  const collection = await prisma.tCSCampaign.findUnique({
+  const collection = await prisma.campaign.findUnique({
     where: {
       id: collectionId,
     },
