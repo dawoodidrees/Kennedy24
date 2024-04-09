@@ -84,6 +84,11 @@ const abi = [
         type: "address",
       },
       {
+        internalType: "string",
+        name: "email",
+        type: "string",
+      },
+      {
         internalType: "uint8",
         name: "_v",
         type: "uint8",
@@ -527,7 +532,7 @@ const abi = [
     name: "contractState",
     outputs: [
       {
-        internalType: "enum TCS.ContractState",
+        internalType: "enum TokenizedCampaignSolutions.ContractState",
         name: "",
         type: "uint8",
       },
@@ -600,9 +605,9 @@ const abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_add",
-        type: "address",
+        internalType: "string",
+        name: "_email",
+        type: "string",
       },
       {
         internalType: "uint8",
@@ -660,9 +665,9 @@ const abi = [
   {
     inputs: [
       {
-        internalType: "address",
+        internalType: "string",
         name: "",
-        type: "address",
+        type: "string",
       },
     ],
     name: "nonce",
@@ -895,10 +900,7 @@ const abi = [
 ];
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
-  console.log({ body });
-  const { collectionId, address } = body;
-  console.log({ collectionId });
+  const { collectionId, email } = await request.json();
   const collection = await prisma.campaign.findUnique({
     where: {
       id: collectionId,
@@ -912,13 +914,13 @@ export async function POST(request: NextRequest) {
       collection.contract_address
     );
     const nonce = (await contractInstance.methods
-      .nonce(address)
+      .nonce(email)
       .call()) as number;
 
     const signature = await signMessage2(
       web3Instance,
       nonce,
-      address,
+      email,
       collection.contract_address
     );
 
@@ -947,12 +949,12 @@ export async function POST(request: NextRequest) {
 const signMessage2 = async (
   web3Instance: any,
   nonce: number,
-  address: string,
+  email: string,
   contractAddress: string
 ) => {
   const message = web3Instance.utils.soliditySha3(
     contractAddress,
-    address,
+    email,
     nonce
   );
   console.log("message", message);
