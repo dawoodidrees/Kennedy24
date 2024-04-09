@@ -86,9 +86,9 @@ export function KycForm({ collectionId, amount, onSuccess }: KycFormParams) {
         and emails from Team Kennedy, including prerecorded messages and via
         automated methods. Msg & data rates may apply. Msg frequency may vary.
         For texts, reply STOP to opt-out & HELP for help. For emails, click the
-        "unsubscribe link" in the footer of the email if you no longer wish to
-        receive such emails. View our Terms of Service and Privacy Policy for
-        more info.
+        &quot;unsubscribe link&quot; in the footer of the email if you no longer
+        wish to receive such emails. View our Terms of Service and Privacy
+        Policy for more info.
       </p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
@@ -120,9 +120,9 @@ export function KycForm({ collectionId, amount, onSuccess }: KycFormParams) {
           </div>
           <p className="text-[12px] leading-6 text-[#2B2C78]">
             Federal Law requires we ask for your name, address, employer and
-            occupation. If you don't have an employer or are retired, put N/A,
-            and if you are self-employed put "self-employed" in employer and
-            describe your occupation.
+            occupation. If you don&apos;t have an employer or are retired, put
+            N/A, and if you are self-employed put &quot;self-employed&quot; in
+            employer and describe your occupation.
           </p>
           <FormField
             control={form.control}

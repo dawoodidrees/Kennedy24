@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
   try {
-    const campaigns = await prisma.tCSCampaign.findMany();
+    const campaigns = await prisma.campaign.findMany();
     return new Response(JSON.stringify({ campaigns }), { status: 200 });
   } catch (error) {
     console.error(error);
@@ -20,8 +20,8 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const apiKey = request.headers.get("x-api-key");
   try {
-    if (apiKey === process.env.X_API_KEY) {
-      const campaign = await prisma.tCSCampaign.create({
+    if (apiKey === process.env.ADMIN_API_KEY) {
+      const campaign = await prisma.campaign.create({
         data: {
           name: body.name,
           contract_address: body.contractAddress.toLowerCase(),

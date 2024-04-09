@@ -1,3 +1,4 @@
+import { LoginFormValues, ValidateOtpValues } from "@/types/login.interface";
 import axios from "axios";
 
 export async function getUser(address: string) {
@@ -19,18 +20,25 @@ export async function isAddressWhitelisted(address: string): Promise<boolean> {
   }
 }
 
-// export async function createUser(address: string) {
-//   const body = {
-//     publicKey: address,
-//     username: "app-user_" + Math.random().toString(36).slice(2, 8),
-//   };
-//   try {
-//     const response = await axios.post(`/api/users`, body);
-//     return response.data;
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
+export async function createUser(email: string, password: string) {
+  const body: LoginFormValues = { email, password };
+  try {
+    const response = await axios.post("/api/auth/signup", body);
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function validateOtp(email: string, otp: string) {
+  const body: ValidateOtpValues = { email, otp };
+  try {
+    const response = await axios.post("/api/auth/signup/otp", body);
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+}
 
 // export async function updateUser(address: string, body: any) {
 //   try {
