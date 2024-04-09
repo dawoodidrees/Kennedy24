@@ -13,13 +13,10 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginFormValues } from "@/types/login.interface";
 import { useToast } from "../ui/use-toast";
 import { useState } from "react";
 import { Icons } from "./icons";
-import { submitKyc } from "@/services/kyc.service.ts";
 import { signIn } from "next-auth/react";
 
 export const FormSchema = z.object({
@@ -42,13 +39,6 @@ export function LoginForm({ onSuccess }: LoginFormParams) {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoadingSave(true);
     try {
-      const body: LoginFormValues = {
-        email: data.email,
-        password: data.password,
-      };
-
-      await axios.post("/api/auth/login", body);
-
       signIn("credentials", {
         email: data.email,
         password: data.password,
@@ -79,7 +69,7 @@ export function LoginForm({ onSuccess }: LoginFormParams) {
             <FormItem>
               <FormLabel htmlFor={field.name}>Email</FormLabel>
               <FormControl>
-                <Input id="email" {...field} min={0} />
+                <Input id="email" {...field} type="email" />
               </FormControl>
             </FormItem>
           )}
@@ -91,7 +81,7 @@ export function LoginForm({ onSuccess }: LoginFormParams) {
             <FormItem>
               <FormLabel htmlFor={field.name}>Password</FormLabel>
               <FormControl>
-                <Input id="password" {...field} />
+                <Input id="password" {...field} type="password" />
               </FormControl>
             </FormItem>
           )}
