@@ -6,8 +6,8 @@ import clsx from "clsx";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PocketWatcher Solana",
-  description: "PocketWatcher Solana",
+  title: "Kennedy24",
+  description: "Kennedy24",
 };
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
       <body
         className={clsx(
           inter.className,
-          "min-h-screen text-white font-inter bg-[#11121c]"
+          "min-h-screen text-black font-inter bg-white"
         )}
       >
         {children}

@@ -12,6 +12,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.515.0",
     "@aws-sdk/s3-request-presigner": "^3.515.0",
+    "@crossmint/client-sdk-react-ui": "^1.1.9",
     "@hookform/resolvers": "^3.3.4",
     "@lndgalante/solutils": "^0.6.0",
     "@prisma/client": "^5.9.1",
@@ -27,12 +28,6 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@rainbow-me/rainbowkit": "^2.0.1",
-    "@solana/spl-token": "^0.4.3",
-    "@solana/wallet-adapter-base": "^0.9.23",
-    "@solana/wallet-adapter-react": "^0.15.35",
-    "@solana/wallet-adapter-react-ui": "^0.9.35",
-    "@solana/wallet-adapter-wallets": "^0.19.32",
-    "@solana/web3.js": "^1.91.2",
     "@tanstack/react-query": "^5.22.2",
     "@types/node": "20.4.1",
     "@types/react": "18.2.14",
@@ -40,7 +35,6 @@
     "axios": "^1.6.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
-    "ethers": "^6.11.1",
     "lucide-react": "^0.330.0",
     "next": "^14.0.3",
     "prisma": "^5.9.1",
@@ -58,7 +52,7 @@
     "usehooks-ts": "^2.16.0",
     "viem": "^2.7.12",
     "wagmi": "^2.5.7",
-    "web3": "^4.4.0",
+    "web3": "^4.6.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
