@@ -12,6 +12,7 @@ model User {
   email        String         @unique @db.VarChar(255)
   verified     Boolean        @default(false)
   password     String         @db.VarChar(255)
+  otp          String         @db.VarChar(6)
   UserDonation UserDonation[]
 }
 
