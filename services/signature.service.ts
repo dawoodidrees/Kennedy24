@@ -3,12 +3,12 @@ import { Signature } from "@/types/signature.interface";
 
 export async function getSignatureValues(
   collectionId: string,
-  address: string
+  email: string
 ): Promise<Signature | null> {
   try {
     const response = await axios.post(`/api/kyc/sign`, {
       collectionId,
-      address,
+      email,
     });
     const sig: Signature = Object.assign(response.data.signature);
     return sig;
