@@ -1497,7 +1497,7 @@ contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
 
     address public USDC = 0x14196F08a4Fa0B66B7331bC40dd6bCd8A1dEeA9F;
 
-    mapping(address => uint256) public nonce;
+    mapping(string => uint256) public nonce;
 
     constructor() ERC721AEnumerable("Tokenized Campaign Solutions", "TCS") {
 
@@ -1550,14 +1550,14 @@ contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
     /* 
     * @dev Verifies if message was signed by owner to give access to _add for this contract.
     *      Assumes Geth signature prefix.
-    * @param _add Address of agent with access
+    * @param _email email of agent with access
     * @param _v ECDSA signature parameter v.
     * @param _r ECDSA signature parameters r.
     * @param _s ECDSA signature parameters s.
     * @return Validity of access message for a given address.
     */
-    function isValidAccessMessage(address _add, uint8 _v, bytes32 _r, bytes32 _s) view public returns (bool) {
-        bytes32 hash = keccak256(abi.encodePacked(address(this), _add, nonce[_add]));
+    function isValidAccessMessage(string calldata _email, uint8 _v, bytes32 _r, bytes32 _s) view public returns (bool) {
+        bytes32 hash = keccak256(abi.encodePacked(address(this), _email, nonce[_email]));
         return signer == ecrecover(keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", hash)), _v, _r, _s);
     }
 
@@ -1569,17 +1569,17 @@ contract TokenizedCampaignSolutions is ERC721AEnumerable, Ownable {
      * Mint tokens.
      * @notice This function is only available to those that have performed KYC.
      */
-    function mint(uint256 donation, address receiver, uint8 _v, bytes32 _r, bytes32 _s)
+    function mint(uint256 donation, address receiver, string calldata email, uint8 _v, bytes32 _r, bytes32 _s)
         external
         isContractState(ContractState.ON)
         withinMintLimit(1)
     {
         require(_numberMinted(receiver) + 1 < allowancePlusOne, "Exceeds allowance");
-        require(isValidAccessMessage(receiver, _v, _r, _s), "Signature is Incorrect!");
+        require(isValidAccessMessage(email, _v, _r, _s), "Signature is Incorrect!");
 
         IERC20(USDC).transferFrom(msg.sender, address(this), donation);
 
-        nonce[receiver]++;
+        nonce[email]++;
         _safeMint(receiver, 1);
     }
 
