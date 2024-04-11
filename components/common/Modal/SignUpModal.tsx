@@ -5,6 +5,7 @@ import useAppDispatch from "@/hooks/useAppDispatch";
 import useAppSelector from "@/hooks/useAppSelector";
 import {
   setSignUpModalOpen,
+  setSignupUserData,
   setVerifyEmailModalOpen,
 } from "@/redux/slices/modal";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -54,15 +55,13 @@ const SignUpModal = () => {
     dispatch(setSignUpModalOpen(false));
   };
 
-  const handleSignUp = () => {
-    handleCloseModal();
-    dispatch(setVerifyEmailModalOpen(true));
-  };
-
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoadingSave(true);
     try {
       await createUser(data.email, data.password);
+      dispatch(
+        setSignupUserData({ email: data.email, password: data.password })
+      );
     } catch (error: any) {
       toast({
         title: "Something went wrong",

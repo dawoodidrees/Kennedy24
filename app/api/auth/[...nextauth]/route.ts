@@ -46,7 +46,8 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       console.log("signIn", { user, account, profile, email, credentials });
-      return true;
+      console.log("will redirect to:", credentials!.callbackUrl as string);
+      return credentials ? (credentials.callbackUrl as string) : true;
     },
     async redirect({ url, baseUrl }) {
       console.log("redirect", { url, baseUrl });

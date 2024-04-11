@@ -8,6 +8,8 @@ const initialState: IModal = {
   checkResetLinkModalOpen: false,
   verifyEmailModalOpen: false,
   confirmCodeModalOpen: false,
+  signupUserEmail: "",
+  signupUserPassword: "",
 };
 
 const modalSlice = createSlice({
@@ -38,6 +40,12 @@ const modalSlice = createSlice({
       state.confirmCodeModalOpen = action.payload;
       return state;
     },
+    setSignupUserData(state, action) {
+      console.log("setSignupUserData", action.payload);
+      state.signupUserEmail = action.payload.email;
+      state.signupUserPassword = action.payload.password;
+      return state;
+    },
   },
 });
 
@@ -48,6 +56,7 @@ export const {
   setCheckResetLinkModalOpen,
   setVerifyEmailModalOpen,
   setConfirmCodeModalOpen,
+  setSignupUserData,
 } = modalSlice.actions;
 
 export default modalSlice.reducer;

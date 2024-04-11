@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { usePathname } from "next/navigation";
 
 interface Props {
   isOpen: boolean;
@@ -40,6 +41,7 @@ export const FormSchema = z.object({
 const LoginModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const dispatch = useAppDispatch();
   const { toast } = useToast();
+  const pathname = usePathname();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {},
@@ -69,10 +71,11 @@ const LoginModal: React.FC<Props> = ({ isOpen, onClose }) => {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoadingSave(true);
     try {
+      console.log({ callbackUrl: `${pathname}/kyc` });
       signIn("credentials", {
         email: data.email,
         password: data.password,
-        callbackUrl: "/",
+        callbackUrl: `${pathname}/kyc`,
       });
 
       toast({
