@@ -10,6 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "px-6 py-2 rounded-[4px] bg-[#2B2C78] text-white text-sm",
+        submit: "w-full rounded-[9px] bg-red ",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
@@ -24,6 +25,7 @@ const buttonVariants = cva(
       },
       size: {
         default: "px-8 py-2",
+        submit: "h-12",
         sm: "h-8 px-3 text-xs",
         lg: "px-8 py-2",
         icon: "h-9 w-9",

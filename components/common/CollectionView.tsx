@@ -64,7 +64,7 @@ const CollectionView: React.FC<Props> = ({ className, isReady = false }) => {
             <p className={"text-primary"}>Text here</p>
             <div className="flex gap-8 md:gap-2">
               <Link
-                href="/collection"
+                href="/collections/1"
                 className="btn-primary whitespace-nowrap"
               >
                 Explore Collection

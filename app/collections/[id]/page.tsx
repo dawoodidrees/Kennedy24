@@ -1,53 +1,64 @@
-"use client";
+import Acknowledgement from "@/components/common/Acknowledgement";
+import CollectionForm from "@/components/common/CollectionForm";
+import CollectionPreview from "@/components/common/CollectionPreview";
 
-import { KycForm } from "@/components/common/kyc-form";
-import { getSignatureValues } from "@/services/signature.service";
-import { Signature } from "@/types/signature.interface";
-import { CrossmintPayButton } from "@crossmint/client-sdk-react-ui";
-import { useEffect, useState } from "react";
-
-export default function Collection({ params }: { params: { id: string } }) {
-  // TODO: address from Crossmint or use email instead (if we change contract logic to sign with email)
-  const [userAddress] = useState("0xaB497Af59DDaA2C7627e8f43D356816C9f87879F");
-  const [userEmail] = useState("aniol@devstudios.digital");
-  const [donation, setDonation] = useState<number>(0);
-  const [signatureValues, setSignatureValues] = useState<Signature>();
-
-  useEffect(() => {
-    getSignatureValuesFromApi();
-  }, []);
-
-  const getSignatureValuesFromApi = async () => {
-    const result = await getSignatureValues(params.id, userEmail);
-    if (result) {
-      setSignatureValues(result);
-    }
-  };
-
+export default function Collection() {
   return (
-    <div>
-      <h1>Collection {params.id}</h1>
-      {signatureValues && (
-        <CrossmintPayButton
-          collectionId={process.env.NEXT_PUBLIC_CROSSMINT_COLLECTION_ID || ""}
-          projectId={process.env.NEXT_PUBLIC_CROSSMINT_PROJECT_ID || ""}
-          mintConfig={{
-            totalPrice: (donation / 1e6).toString(),
-            donation: donation.toString(),
-            email: userEmail,
-            _v: signatureValues.v,
-            _r: signatureValues.r,
-            _s: signatureValues.s,
-          }}
-          environment={
-            process.env.NODE_ENV === "development" ? "staging" : "production"
-          }
-          currency="USD"
-          checkoutProps={{ paymentMethods: ["fiat"] }}
-          emailTo={userEmail}
-        />
-      )}
-      {/* <KycForm collectionId={params.id} amount={60.0} onSuccess={() => {}} /> */}
+    <div className="container">
+      <CollectionForm className="mt-8 md:mt-16" />
+      <div className="mt-36 grid grid-cols-2 gap-20 md:mt-20 md:grid-cols-1 md:gap-12">
+        <div className="flex flex-col gap-12 md:flex-col-reverse">
+          <div className="space-y-8">
+            <h3>Artist Chris Levine</h3>
+            <p className="text-xl font-light !leading-[1.6] text-primary md:text-lg">
+              Lorem ipsum dolor sit amet consectetur. Duis neque tellus
+              pellentesque fermentum gravida ut. Ornare congue tincidunt lectus
+              pharetra euismod in. Sed nisl massa orci egestas. Montes sed felis
+              varius molestie quis sed tellus morbi lorem. Eget sit sapien sed
+              vitae ante blandit nulla. Ullamcorper urna convallis a sed
+              suspendisse turpis gravida. Ultrices ac eget nunc pellentesque
+              convallis nibh. Fermentum pulvinar nec nisi lectus aenean. Egestas
+              commodo molestie nullam interdum eu felis. In massa eget libero
+              tellus ac. Varius aenean neque sit sed. Lectus dui facilisis nisi
+              eget. At neque eu curabitur nunc. Gravida fames rhoncus lorem
+              dictum. Nibh eu donec in leo viverra. Pulvinar suscipit diam
+              imperdiet enim nisl rutrum velit iaculis semper. Dictum tincidunt
+              odio sapien nulla lectus eget varius pellentesque. Nisl congue
+              arcu mattis massa sit rutrum fringilla nam. Dignissim augue ut
+              tempor nec molestie fusce volutpat.
+            </p>
+          </div>
+          <div className="h-80 bg-primary"></div>
+        </div>
+        <div className="flex flex-col justify-between md:space-y-12">
+          <div className="h-[480px] bg-primary"></div>
+          <p className="text-xl font-light !leading-[1.6] text-primary md:text-lg">
+            Lorem ipsum dolor sit amet consectetur. Morbi gravida hendrerit
+            gravida quisque maecenas tortor. Id eu sed viverra semper massa diam
+            justo. Non viverra cras lobortis nunc metus aliquam semper
+            vulputate. Natoque rutrum pulvinar vel sit donec. Pharetra velit
+            rhoncus in volutpat arcu. Parturient lectus risus mauris adipiscing
+            cursus. At condimentum leo sagittis vitae eu. Vel sed nullam
+            dignissim turpis. Venenatis ut purus quis diam suspendisse neque
+            massa.
+          </p>
+        </div>
+      </div>
+      <div className="mt-12 space-y-10 md:mt-16">
+        <h3>Other Collections</h3>
+        <div className="space-y-8">
+          <div className="grid grid-cols-3 gap-6 md:grid-cols-2 sm:grid-cols-1">
+            <CollectionPreview />
+            <CollectionPreview />
+            <CollectionPreview />
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-1">
+            <div className="sm:hidden" />
+            <button className="btn-primary">Buy On Opensea</button>
+          </div>
+        </div>
+      </div>
+      <Acknowledgement className="py-16 md:pb-8" />
     </div>
   );
 }

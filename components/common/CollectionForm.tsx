@@ -5,6 +5,9 @@ import { Icon } from "@iconify/react";
 import cx from "classnames";
 import Slider from "rc-slider";
 import BuyNFTModal from "./Modal/BuyNFTModal";
+import LoginModal from "./Modal/LoginModal";
+import { useSession } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   className?: string;
@@ -14,6 +17,17 @@ const CollectionForm: React.FC<Props> = ({ className }) => {
   const [count, setCount] = useState<number>(1);
   const [price, setPrice] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { data: session } = useSession();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleBuyNft = () => {
+    if (!session) {
+      setIsOpen(true);
+    } else {
+      router.push(`${pathname}/kyc`);
+    }
+  };
 
   return (
     <div
@@ -22,7 +36,7 @@ const CollectionForm: React.FC<Props> = ({ className }) => {
         className
       )}
     >
-      <BuyNFTModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <LoginModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <div
         className="mx-auto w-full max-w-[440px] bg-primary"
         style={{ aspectRatio: 22 / 27 }}
@@ -59,7 +73,7 @@ const CollectionForm: React.FC<Props> = ({ className }) => {
           </div>
           <button
             className="btn-primary w-full max-w-[300px]"
-            onClick={() => setIsOpen(true)}
+            onClick={handleBuyNft}
           >
             Buy
           </button>
