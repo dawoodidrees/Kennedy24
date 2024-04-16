@@ -1,35 +1,23 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import cx from "classnames";
+import "rc-slider/assets/index.css";
 import "./globals.css";
-import clsx from "clsx";
-import SessionProvider from "@/providers/session-provider";
-
+import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Kennedy24",
-  description: "Kennedy24",
+  description: "Declare your independence",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-      </head>
-      <body
-        className={clsx(
-          inter.className,
-          "min-h-screen text-black font-inter bg-white"
-        )}
-      >
-        <SessionProvider>{children}</SessionProvider>
-      </body>
+      <body className={cx(inter.className)}>{children}</body>
     </html>
   );
 }

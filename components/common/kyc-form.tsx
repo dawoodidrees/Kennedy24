@@ -68,7 +68,8 @@ export function KycForm({ collectionId, amount, onSuccess }: KycFormParams) {
 
   return (
     <div className="w-3/5 mx-auto">
-      <p className="text-[12px] leading-6">
+      <p className="text-sm font-bold mb-4">Contribution rules</p>
+      <p className="text-sm leading-7">
         1. I am a U.S. citizen or a lawfully admitted permanent resident (i.e.,
         green card holder). 2. This contribution is made from my own funds, and
         funds are not being provided to me by another person or entity to make
@@ -91,16 +92,21 @@ export function KycForm({ collectionId, amount, onSuccess }: KycFormParams) {
         Policy for more info.
       </p>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
-          <div className="flex justify-between">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 my-6">
+          <div className="flex justify-between gap-4">
             <FormField
               control={form.control}
               name="employer"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-1/2">
                   <FormLabel htmlFor={field.name}>Employer</FormLabel>
                   <FormControl>
-                    <Input id="employer" {...field} min={0} />
+                    <Input
+                      id="employer"
+                      {...field}
+                      min={0}
+                      className="text-start text-black border-black"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -109,16 +115,20 @@ export function KycForm({ collectionId, amount, onSuccess }: KycFormParams) {
               control={form.control}
               name="occupation"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-1/2">
                   <FormLabel htmlFor={field.name}>Occupation</FormLabel>
                   <FormControl>
-                    <Input id="occupation" {...field} />
+                    <Input
+                      id="occupation"
+                      {...field}
+                      className="text-start text-black border-black"
+                    />
                   </FormControl>
                 </FormItem>
               )}
             />
           </div>
-          <p className="text-[12px] leading-6 text-[#2B2C78]">
+          <p className="text-sm leading-7 text-[#2B2C78]">
             Federal Law requires we ask for your name, address, employer and
             occupation. If you don&apos;t have an employer or are retired, put
             N/A, and if you are self-employed put &quot;self-employed&quot; in
