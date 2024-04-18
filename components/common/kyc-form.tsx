@@ -30,7 +30,7 @@ export const FormSchema = z.object({
 interface KycFormParams {
   collectionId: string;
   amount: number;
-  onSuccess: () => void;
+  onSuccess: (data: KycFormValues) => void;
 }
 
 export function KycForm({ collectionId, amount, onSuccess }: KycFormParams) {
@@ -46,17 +46,17 @@ export function KycForm({ collectionId, amount, onSuccess }: KycFormParams) {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoadingSave(true);
     try {
-      const body: KycFormValues = {
+      const result: KycFormValues = {
         employer: data.employer,
         occupation: data.occupation,
         acceptTerms: Boolean(data.acceptTerms),
       };
-      await submitKyc(collectionId, body);
-      toast({
-        title: "Success!",
-        description: "Webhook created successfully",
-      });
-      onSuccess();
+      // await submitKyc(collectionId, body);
+      // toast({
+      //   title: "Success!",
+      //   description: "Webhook created successfully",
+      // });
+      onSuccess(result);
     } catch (error: any) {
       toast({
         title: "Something went wrong",

@@ -3,15 +3,20 @@
 import { KycForm } from "@/components/common/kyc-form";
 import { getSignatureValues } from "@/services/signature.service";
 import { Signature } from "@/types/signature.interface";
-import { CrossmintPayButton } from "@crossmint/client-sdk-react-ui";
+import {
+  CrossmintEvent,
+  CrossmintPayButton,
+  CrossmintPaymentElement,
+} from "@crossmint/client-sdk-react-ui";
 import { useEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
+import { createUserDonation } from "@/services/donation.service";
 
 interface NftCheckoutParams {
   collectionId: string;
   amount: number;
   userEmail: string;
-  onSuccess: () => void;
+  onSuccess: (orderId: string) => void;
 }
 
 export default function NftCheckout({
@@ -33,10 +38,22 @@ export default function NftCheckout({
     }
   };
 
+  const handleEvent = async (event: CrossmintEvent) => {
+    if (event.type === "payment:process.succeeded") {
+      onSuccess(event.payload.orderIdentifier);
+    } else if (
+      event.type === "payment:process.canceled" ||
+      event.type === "payment:process.rejected"
+    ) {
+      // redirect to error page
+      // also store identifier but with error flag?
+    }
+  };
+
   if (!signatureValues) return <Skeleton className="w-full h-64" />;
 
   return (
-    <CrossmintPayButton
+    <CrossmintPaymentElement
       collectionId={process.env.NEXT_PUBLIC_CROSSMINT_COLLECTION_ID || ""}
       projectId={process.env.NEXT_PUBLIC_CROSSMINT_PROJECT_ID || ""}
       mintConfig={{
@@ -51,8 +68,13 @@ export default function NftCheckout({
         process.env.NODE_ENV === "development" ? "staging" : "production"
       }
       currency="USD"
-      checkoutProps={{ paymentMethods: ["fiat"] }}
-      emailTo={userEmail}
+      // checkoutProps={{ paymentMethods: ["fiat"] }}
+      // emailTo={userEmail}
+      paymentMethod="fiat"
+      recipient={{ email: userEmail }}
+      onEvent={(event) => {
+        handleEvent(event);
+      }}
     />
   );
 }
