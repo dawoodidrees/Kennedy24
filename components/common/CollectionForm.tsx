@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
 import cx from "classnames";
@@ -8,12 +9,13 @@ import BuyNFTModal from "./Modal/BuyNFTModal";
 import LoginModal from "./Modal/LoginModal";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
+import { CollectionPreview } from "@/types/collection.interface";
 
 interface Props {
-  className?: string;
+  collection: CollectionPreview;
 }
 
-const CollectionForm: React.FC<Props> = ({ className }) => {
+const CollectionForm: React.FC<Props> = ({ collection }) => {
   const [count, setCount] = useState<number>(1);
   const [price, setPrice] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -30,25 +32,19 @@ const CollectionForm: React.FC<Props> = ({ className }) => {
   };
 
   return (
-    <div
-      className={cx(
-        "grid grid-cols-2 gap-20 md:grid-cols-1 md:gap-8",
-        className
-      )}
-    >
+    <div className="grid grid-cols-2 gap-20 md:grid-cols-1 md:gap-8 mt-8 md:mt-16">
       <LoginModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      <div
-        className="mx-auto w-full max-w-[440px] bg-primary"
-        style={{ aspectRatio: 22 / 27 }}
+      <Image
+        src={collection.image}
+        alt="collection"
+        className="mx-auto w-full max-w-[440px] aspect-[0.8] flex-shrink-0 object-cover"
       />
       <div>
         <div>
-          <h2>Text</h2>
-          <h4>Subtext</h4>
+          <h2>{collection.title}</h2>
+          <h4>{collection.subtitle}</h4>
           <p className={cx("mt-6 text-base font-light text-primary")}>
-            Lorem ipsum dolor sit amet consectetur. Proin pellentesque proin
-            amet vulputate commodo quam magna pharetra quis. Ac sed in gravida
-            nunc.
+            {collection.description}
             <br />
             <span className="cursor-pointer font-medium">Read more</span>
           </p>

@@ -1,46 +1,45 @@
+import Image from "next/image";
 import Acknowledgement from "@/components/common/Acknowledgement";
 import CollectionForm from "@/components/common/CollectionForm";
 import CollectionPreview from "@/components/common/CollectionPreview";
+import { collection1 } from "@/data/collections";
+import Dog from "@/assets/images/collections/1/dog2.png";
+import Car from "@/assets/images/collections/1/car.png";
 
 export default function Collection() {
   return (
     <div className="container">
-      <CollectionForm className="mt-8 md:mt-16" />
+      <CollectionForm collection={collection1} />
       <div className="mt-36 grid grid-cols-2 gap-20 md:mt-20 md:grid-cols-1 md:gap-12">
         <div className="flex flex-col gap-12 md:flex-col-reverse">
           <div className="space-y-8">
-            <h3>Artist Chris Levine</h3>
+            <h3>The Legendary Sienna</h3>
             <p className="text-xl font-light !leading-[1.6] text-primary md:text-lg">
-              Lorem ipsum dolor sit amet consectetur. Duis neque tellus
-              pellentesque fermentum gravida ut. Ornare congue tincidunt lectus
-              pharetra euismod in. Sed nisl massa orci egestas. Montes sed felis
-              varius molestie quis sed tellus morbi lorem. Eget sit sapien sed
-              vitae ante blandit nulla. Ullamcorper urna convallis a sed
-              suspendisse turpis gravida. Ultrices ac eget nunc pellentesque
-              convallis nibh. Fermentum pulvinar nec nisi lectus aenean. Egestas
-              commodo molestie nullam interdum eu felis. In massa eget libero
-              tellus ac. Varius aenean neque sit sed. Lectus dui facilisis nisi
-              eget. At neque eu curabitur nunc. Gravida fames rhoncus lorem
-              dictum. Nibh eu donec in leo viverra. Pulvinar suscipit diam
-              imperdiet enim nisl rutrum velit iaculis semper. Dictum tincidunt
-              odio sapien nulla lectus eget varius pellentesque. Nisl congue
-              arcu mattis massa sit rutrum fringilla nam. Dignissim augue ut
-              tempor nec molestie fusce volutpat.
+              The beat-up 1998 Toyota Sienna, affectionately known as the "Doggy
+              Van," is a central character in every NFT. Rendered in loving
+              detail, the van showcases its battle scars, dog fur, and the
+              peculiar absence of seatbelts - a quirky testament to Attila's
+              mischievous nature.
             </p>
           </div>
-          <div className="h-80 bg-primary"></div>
+          <Image
+            src={Dog}
+            alt="collection"
+            className="h-96 object-cover w-full"
+          />
         </div>
         <div className="flex flex-col justify-between md:space-y-12">
-          <div className="h-[480px] bg-primary"></div>
+          <Image
+            src={Car}
+            alt="collection"
+            className="h-96 object-cover w-full"
+          />
           <p className="text-xl font-light !leading-[1.6] text-primary md:text-lg">
-            Lorem ipsum dolor sit amet consectetur. Morbi gravida hendrerit
-            gravida quisque maecenas tortor. Id eu sed viverra semper massa diam
-            justo. Non viverra cras lobortis nunc metus aliquam semper
-            vulputate. Natoque rutrum pulvinar vel sit donec. Pharetra velit
-            rhoncus in volutpat arcu. Parturient lectus risus mauris adipiscing
-            cursus. At condimentum leo sagittis vitae eu. Vel sed nullam
-            dignissim turpis. Venenatis ut purus quis diam suspendisse neque
-            massa.
+            Each NFT features vibrant, animated depictions of RFK Jr. and his
+            dogs, set against the backdrop of the rugged beauty of the Santa
+            Monica canyons. From the serene dawn mists to the exuberant energy
+            of the dogs, every piece tells a story of companionship, adventure,
+            and the simple joys of life.
           </p>
         </div>
       </div>

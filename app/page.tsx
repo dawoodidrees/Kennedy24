@@ -9,6 +9,7 @@ import M4Logo from "@/assets/images/M4Logo.png";
 import PlaceholderImage from "@/assets/images/Placeholder.png";
 import Acknowledgement from "@/components/common/Acknowledgement";
 import CollectionView from "@/components/common/CollectionView";
+import { collection1, collection2, collection3 } from "@/data/collections";
 
 export default function Home() {
   return (
@@ -38,9 +39,9 @@ export default function Home() {
           </p>
         </div>
         <div className="space-y-8">
-          <CollectionView isReady />
-          <CollectionView />
-          <CollectionView />
+          <CollectionView isReady collection={collection1} />
+          <CollectionView collection={collection2} />
+          <CollectionView collection={collection3} />
         </div>
       </section>
       <section className="container !max-w-[1266px] space-y-14 md:space-y-20">

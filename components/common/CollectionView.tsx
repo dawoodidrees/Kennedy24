@@ -2,13 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import cx from "classnames";
 import ManImage from "@/assets/images/Man.jpg";
+import { CollectionPreview } from "@/types/collection.interface";
 
 interface Props {
   className?: string;
   isReady?: boolean;
+  collection: CollectionPreview;
 }
 
-const CollectionView: React.FC<Props> = ({ className, isReady = false }) => {
+const CollectionView: React.FC<Props> = ({
+  className,
+  isReady = false,
+  collection,
+}) => {
   return (
     <div
       className={cx(
@@ -47,21 +53,19 @@ const CollectionView: React.FC<Props> = ({ className, isReady = false }) => {
       )}
       <div className="flex gap-12 md:flex-col">
         <Image
-          src={ManImage}
-          alt="Man"
+          src={collection.image}
+          alt="collection"
           className="aspect-[0.8] w-80 flex-shrink-0 object-cover md:mx-auto"
         />
         <div className="flex flex-col gap-4">
           <p className="text-[35px] font-semibold !leading-[1.6] text-primary">
-            Heading
+            {collection.title}
           </p>
           <p className="text-xl !leading-[1.6] text-primary">
-            {isReady
-              ? "Lorem ipsum dolor sit amet consectetur. Mi commodo etiam et sed feugiat sit volutpat eget. Quam cum purus enim diam enim ac. Amet sollicitudin ornare maecenas sit consequat imperdiet mattis purus nullam. Vulputate dictum sit ultrices in consequat nisl eget consectetur. "
-              : "Text here"}
+            {collection.description}
           </p>
           <div className="mt-auto space-y-4">
-            <p className={"text-primary"}>Text here</p>
+            {/* <p className={"text-primary"}>Text here</p> */}
             <div className="flex gap-8 md:gap-2">
               <Link
                 href="/collections/1"
