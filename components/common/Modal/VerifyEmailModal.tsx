@@ -28,6 +28,7 @@ const VerifyEmailModal = () => {
   const handleVerify = async (otp: string) => {
     try {
       await validateOtp(signupUserEmail, otp);
+      console.log({ callbackUrl: `${pathname}/kyc` });
       signIn("credentials", {
         email: signupUserEmail,
         password: signupUserPassword,

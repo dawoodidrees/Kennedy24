@@ -51,11 +51,6 @@ export function SignupForm({ onSuccess }: SignupFormParams) {
     setIsLoadingSave(true);
     try {
       await createUser(data.email, data.password);
-      // signIn("credentials", {
-      //   email: data.email,
-      //   password: data.password,
-      //   callbackUrl: "/",
-      // });
       onSuccess();
     } catch (error: any) {
       toast({
