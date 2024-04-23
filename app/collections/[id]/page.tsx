@@ -15,11 +15,11 @@ export default function Collection() {
           <div className="space-y-8">
             <h3>The Legendary Sienna</h3>
             <p className="text-xl font-light !leading-[1.6] text-primary md:text-lg">
-              The beat-up 1998 Toyota Sienna, affectionately known as the "Doggy
-              Van," is a central character in every NFT. Rendered in loving
-              detail, the van showcases its battle scars, dog fur, and the
-              peculiar absence of seatbelts - a quirky testament to Attila's
-              mischievous nature.
+              The beat-up 1998 Toyota Sienna, affectionately known as the
+              &quot;Doggy Van,&quot; is a central character in every NFT.
+              Rendered in loving detail, the van showcases its battle scars, dog
+              fur, and the peculiar absence of seatbelts - a quirky testament to
+              Attila&apos;s mischievous nature.
             </p>
           </div>
           <Image
