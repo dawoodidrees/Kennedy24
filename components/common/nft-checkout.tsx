@@ -65,7 +65,8 @@ export default function NftCheckout({
         _s: signatureValues.s,
       }}
       environment={
-        process.env.NODE_ENV === "development" ? "staging" : "production"
+        // process.env.NODE_ENV === "development" ? "staging" : "production"
+        "staging"
       }
       currency="USD"
       // checkoutProps={{ paymentMethods: ["fiat"] }}
