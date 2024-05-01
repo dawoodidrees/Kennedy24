@@ -28,9 +28,8 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// TODO: persist orderId in db
 export async function POST(req: NextRequest) {
-  const { campaignId, amount, tokenId, employer, occupation, orderId } =
+  const { campaignId, employer, occupation, orderId, donationAmount } =
     await req.json();
   try {
     const session = await getToken({ req });
@@ -44,8 +43,8 @@ export async function POST(req: NextRequest) {
       data: {
         user_id: id as string,
         campaign_id: campaignId as string,
-        amount,
-        token_id: tokenId,
+        order_id: orderId,
+        amount: donationAmount,
         employer,
         occupation,
       },

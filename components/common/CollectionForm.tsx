@@ -2,10 +2,8 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Icon } from "@iconify/react";
 import cx from "classnames";
 import Slider from "rc-slider";
-import BuyNFTModal from "./Modal/BuyNFTModal";
 import LoginModal from "./Modal/LoginModal";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
@@ -29,6 +27,7 @@ const CollectionForm: React.FC<Props> = ({ collection }) => {
     if (!session) {
       setIsOpen(true);
     } else {
+      console.log("set donation amount", price);
       setDonationAmount(price);
       router.push(`${pathname}/kyc`);
     }

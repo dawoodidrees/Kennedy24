@@ -27,9 +27,9 @@ model UserDonation {
   id          Int      @id @default(autoincrement())
   user_id     String   @default(uuid())
   campaign_id String   @default(uuid())
-  amount      Decimal  @default(0)
+  order_id    String
+  amount      Int  @default(0)
   timestamp   DateTime @default(now())
-  token_id    Int
   employer    String
   occupation  String
   Campaign    Campaign @relation(fields: [campaign_id], references: [id], onDelete: Cascade)

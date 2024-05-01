@@ -19,15 +19,13 @@ export default function Kyc({ params }: { params: { id: string } }) {
   const { donationAmount } = useGlobalContext();
   const { data: session } = useSession();
 
-  // TODO: remove hardcoded tokenId & amount
   const handlePurchaseSuccess = async (orderId: string) => {
     const data = {
       campaignId: params.id,
-      amount: 0,
-      tokenId: 0,
       employer: kycFormValues?.employer || "",
       occupation: kycFormValues?.occupation || "",
       orderId,
+      donationAmount,
     };
     console.log("before api call", data);
     await createUserDonation(data);
