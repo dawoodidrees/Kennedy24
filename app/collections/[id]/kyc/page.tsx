@@ -35,7 +35,6 @@ export default function Kyc({ params }: { params: { id: string } }) {
     // redirect to success page
     router.push("/");
   };
-  // TODO: remove hardcoded email for actual user email one
   return (
     <div className="container my-8">
       {!displayNftCheckout && (
