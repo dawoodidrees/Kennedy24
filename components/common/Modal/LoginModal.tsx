@@ -88,7 +88,7 @@ const LoginModal: React.FC<Props> = ({ isOpen, onClose }) => {
         description: error.message || "There was an error logging in",
       });
     }
-    setIsLoadingSave(false);
+    // setIsLoadingSave(false);
   }
 
   return (
