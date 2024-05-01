@@ -3,8 +3,8 @@
 import React, { createContext, useContext, useState } from "react";
 
 type GlobalContext = {
-  showConfetti: boolean;
-  setShowConfetti: React.Dispatch<React.SetStateAction<boolean>>;
+  donationAmount: number;
+  setDonationAmount: React.Dispatch<React.SetStateAction<number>>;
 };
 export const GlobalContext = createContext<GlobalContext | null>(null);
 
@@ -13,13 +13,13 @@ export default function GlobalContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [showConfetti, setShowConfetti] = useState<boolean>(false);
+  const [donationAmount, setDonationAmount] = useState<number>(0);
 
   return (
     <GlobalContext.Provider
       value={{
-        showConfetti,
-        setShowConfetti,
+        donationAmount,
+        setDonationAmount,
       }}
     >
       {children}

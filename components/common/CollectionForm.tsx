@@ -10,23 +10,26 @@ import LoginModal from "./Modal/LoginModal";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { CollectionPreview } from "@/types/collection.interface";
+import { useGlobalContext } from "@/context/global-context";
 
 interface Props {
   collection: CollectionPreview;
 }
 
 const CollectionForm: React.FC<Props> = ({ collection }) => {
-  const [count, setCount] = useState<number>(1);
+  // const [count, setCount] = useState<number>(1);
   const [price, setPrice] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data: session } = useSession();
   const router = useRouter();
   const pathname = usePathname();
+  const { setDonationAmount } = useGlobalContext();
 
   const handleBuyNft = () => {
     if (!session) {
       setIsOpen(true);
     } else {
+      setDonationAmount(price);
       router.push(`${pathname}/kyc`);
     }
   };
@@ -50,7 +53,7 @@ const CollectionForm: React.FC<Props> = ({ collection }) => {
           </p>
         </div>
         <div className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-4">
-          <div className="flex items-center gap-3.5">
+          {/* <div className="flex items-center gap-3.5">
             <button
               className="flex h-6 w-6 items-center justify-center border border-primary"
               onClick={() => setCount((prev) => Math.max(1, prev - 1))}
@@ -66,7 +69,7 @@ const CollectionForm: React.FC<Props> = ({ collection }) => {
             >
               <Icon icon="bx:plus" className="text-xl text-primary" />
             </button>
-          </div>
+          </div> */}
           <button
             className="btn-primary w-full max-w-[300px]"
             onClick={handleBuyNft}

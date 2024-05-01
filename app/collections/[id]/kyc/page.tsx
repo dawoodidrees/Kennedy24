@@ -1,8 +1,10 @@
 "use client";
 import { KycForm } from "@/components/common/kyc-form";
 import NftCheckout from "@/components/common/nft-checkout";
+import { useGlobalContext } from "@/context/global-context";
 import { createUserDonation } from "@/services/donation.service";
 import { KycFormValues } from "@/types/kyc.interface";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -14,6 +16,8 @@ export default function Kyc({ params }: { params: { id: string } }) {
     setDisplayNftCheckout(true);
     setKycFormValues(data);
   };
+  const { donationAmount } = useGlobalContext();
+  const { data: session } = useSession();
 
   // TODO: remove hardcoded tokenId & amount
   const handlePurchaseSuccess = async (orderId: string) => {
@@ -37,7 +41,7 @@ export default function Kyc({ params }: { params: { id: string } }) {
       {!displayNftCheckout && (
         <KycForm
           collectionId={params.id}
-          amount={60.0}
+          amount={donationAmount}
           onSuccess={handleFormSuccess}
         />
       )}
@@ -45,8 +49,8 @@ export default function Kyc({ params }: { params: { id: string } }) {
         <div className="w-full flex justify-center">
           <NftCheckout
             collectionId={params.id}
-            amount={1}
-            userEmail="aniol@devstudios.digital"
+            amount={donationAmount}
+            userEmail={session?.user?.email || ""}
             onSuccess={handlePurchaseSuccess}
           />
         </div>

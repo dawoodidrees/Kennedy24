@@ -45,20 +45,20 @@ export default function NftCheckout({
       event.type === "payment:process.canceled" ||
       event.type === "payment:process.rejected"
     ) {
-      // redirect to error page
+      // TODO: redirect to error page
       // also store identifier but with error flag?
     }
   };
 
-  if (!signatureValues) return <Skeleton className="w-full h-64" />;
+  if (!signatureValues) return <Skeleton className="w-1/4 mx-auto h-96" />;
 
   return (
     <CrossmintPaymentElement
       collectionId={process.env.NEXT_PUBLIC_CROSSMINT_COLLECTION_ID || ""}
       projectId={process.env.NEXT_PUBLIC_CROSSMINT_PROJECT_ID || ""}
       mintConfig={{
-        totalPrice: (amount / 1e6).toString(),
-        donation: amount.toString(),
+        totalPrice: amount.toString(), // value in USD
+        donation: (amount * 1e6).toString(), // value in USDC (6 decimals)
         email: userEmail,
         _v: signatureValues.v,
         _r: signatureValues.r,
