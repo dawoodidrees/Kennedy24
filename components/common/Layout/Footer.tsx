@@ -43,6 +43,7 @@ const Footer = () => {
                 href={link.href}
                 className="w-fit whitespace-nowrap text-[0.8rem] font-bold text-primary"
                 key={link.title}
+                target="_blank"
               >
                 {link.title}
               </Link>
