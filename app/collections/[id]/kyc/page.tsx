@@ -1,12 +1,13 @@
 "use client";
 import { KycForm } from "@/components/common/kyc-form";
 import NftCheckout from "@/components/common/nft-checkout";
-import { useGlobalContext } from "@/context/global-context";
+// import { useGlobalContext } from "@/context/global-context";
 import { createUserDonation } from "@/services/donation.service";
 import { KycFormValues } from "@/types/kyc.interface";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useLocalStorage } from "usehooks-ts";
 
 export default function Kyc({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -16,8 +17,12 @@ export default function Kyc({ params }: { params: { id: string } }) {
     setDisplayNftCheckout(true);
     setKycFormValues(data);
   };
-  const { donationAmount } = useGlobalContext();
+  // const { donationAmount } = useGlobalContext();
   const { data: session } = useSession();
+  const [donationAmount, setDonationAmount] = useLocalStorage(
+    "donationAmount",
+    1
+  );
 
   const handlePurchaseSuccess = async (orderId: string) => {
     const data = {
@@ -30,7 +35,7 @@ export default function Kyc({ params }: { params: { id: string } }) {
     console.log("before api call", data);
     await createUserDonation(data);
 
-    // redirect to success page
+    // TODO: redirect to success page
     router.push("/");
   };
   return (

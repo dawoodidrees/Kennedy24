@@ -8,7 +8,8 @@ import LoginModal from "./Modal/LoginModal";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { CollectionPreview } from "@/types/collection.interface";
-import { useGlobalContext } from "@/context/global-context";
+// import { useGlobalContext } from "@/context/global-context";
+import { useLocalStorage } from "usehooks-ts";
 
 interface Props {
   collection: CollectionPreview;
@@ -21,14 +22,17 @@ const CollectionForm: React.FC<Props> = ({ collection }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const pathname = usePathname();
-  const { setDonationAmount } = useGlobalContext();
+  // const { setDonationAmount } = useGlobalContext();
+  const [donationAmount, setDonationAmount] = useLocalStorage(
+    "donationAmount",
+    1
+  );
 
   const handleBuyNft = () => {
+    setDonationAmount(price);
     if (!session) {
       setIsOpen(true);
     } else {
-      console.log("set donation amount", price);
-      setDonationAmount(price);
       router.push(`${pathname}/kyc`);
     }
   };
