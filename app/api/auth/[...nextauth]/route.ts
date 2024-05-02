@@ -50,7 +50,7 @@ const authOptions: NextAuthOptions = {
     },
     async redirect({ url, baseUrl }) {
       console.log("redirect", { url, baseUrl });
-      return baseUrl;
+      return url;
     },
     async jwt({ token, user }) {
       if (token?.id) return token;
