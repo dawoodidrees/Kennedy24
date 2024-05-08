@@ -25,10 +25,10 @@ export const FormSchema = z.object({
 });
 
 interface LoginFormParams {
-  onSuccess: () => void;
+  // onSuccess: () => void;
 }
 
-export function LoginForm({ onSuccess }: LoginFormParams) {
+export function LoginForm() {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -39,17 +39,17 @@ export function LoginForm({ onSuccess }: LoginFormParams) {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoadingSave(true);
     try {
-      signIn("credentials", {
+      const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
-        callbackUrl: "/",
+        callbackUrl: "/collections/1",
       });
 
       toast({
         title: "Success!",
         description: "Webhook created successfully",
       });
-      onSuccess();
+      // onSuccess();
     } catch (error: any) {
       toast({
         title: "Something went wrong",
