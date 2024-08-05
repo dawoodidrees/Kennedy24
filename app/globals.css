@@ -13,7 +13,7 @@ textarea {
 }
 
 h1 {
-  @apply text-center text-[3rem] font-black leading-[1.3] text-primary;
+  @apply text-center text-[3rem] font-black leading-[1.3] text-white;
 }
 
 h2 {
@@ -29,7 +29,7 @@ h4 {
 }
 
 .btn-primary {
-  @apply flex h-12 items-center justify-center border-2 border-primary bg-primary px-8 font-medium text-white transition-all duration-300 ease-in-out hover:bg-transparent hover:text-primary;
+  @apply flex h-12 items-center justify-center border-2 border-[#AEAEB6] bg-[#AEAEB6] px-8 font-medium text-black transition-all duration-300 ease-in-out hover:bg-transparent hover:text-white text-center rounded-lg;
 }
 
 .btn-primary-outlined {
@@ -37,11 +37,11 @@ h4 {
 }
 
 .attr-title {
-  @apply text-xs text-black/60;
+  @apply text-xs text-primary;
 }
 
 .attr-description {
-  @apply text-xl font-semibold leading-[1.6] text-primary;
+  @apply text-xl md:text-sm font-semibold leading-[1.6] text-primary;
 }
 
 .modal-header {
@@ -50,4 +50,12 @@ h4 {
 
 .modal-input {
   @apply w-full rounded-[5px] border-[3px] border-[#E5E7EB] bg-transparent p-3 text-center font-medium text-white;
+}
+
+.background-gradient {
+  background: linear-gradient(90deg, #060622 50%, #181888 100%);
+}
+
+.background-gradient-black {
+  background: linear-gradient(0deg, rgba(16, 16, 16, 1) 14%, rgba(67, 67, 67, 0.6) 50%, rgba(16, 16, 16, 1) 70%);
 }
