@@ -23,10 +23,7 @@ const CollectionForm: React.FC<Props> = ({ collection }) => {
   const router = useRouter();
   const pathname = usePathname();
   // const { setDonationAmount } = useGlobalContext();
-  const [donationAmount, setDonationAmount] = useLocalStorage(
-    "donationAmount",
-    1
-  );
+  const [donationAmount, setDonationAmount] = useLocalStorage("donationAmount", 1);
 
   const handleBuyNft = () => {
     setDonationAmount(price);
@@ -38,21 +35,17 @@ const CollectionForm: React.FC<Props> = ({ collection }) => {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-20 md:grid-cols-1 md:gap-8 mt-8 md:mt-16">
+    <div className="grid grid-cols-2 gap-20 md:grid-cols-1 md:gap-8 pt-8 md:pt-16">
       <LoginModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      <Image
-        src={collection.image}
-        alt="collection"
-        className="mx-auto w-full max-w-[440px] aspect-[0.8] flex-shrink-0 object-cover"
-      />
+      <Image src={collection.image} alt="collection" className="mx-auto w-full max-w-[440px] aspect-[0.8] flex-shrink-0 object-cover sticky top-1 md:static" />
       <div>
         <div>
-          <h2>{collection.title}</h2>
-          <h4>{collection.subtitle}</h4>
-          <p className={cx("mt-6 text-base font-light text-primary")}>
+          <h2 className="text-white md:text-3xl">{collection.title}</h2>
+          <h4 className="text-white md:text-xl">{collection.subtitle}</h4>
+          <p className={cx("mt-6 text-base font-light text-white md:text-sm md:mt-4")}>
             {collection.description}
             <br />
-            <span className="cursor-pointer font-medium">Read more</span>
+            <span className="cursor-pointer font-medium text-white">Read more</span>
           </p>
         </div>
         <div className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-4">
@@ -73,20 +66,14 @@ const CollectionForm: React.FC<Props> = ({ collection }) => {
               <Icon icon="bx:plus" className="text-xl text-primary" />
             </button>
           </div> */}
-          <button
-            className="btn-primary w-full max-w-[300px]"
-            onClick={handleBuyNft}
-          >
+          <button className="btn-primary w-full max-w-[300px] md:max-w-full" onClick={handleBuyNft}>
             Buy
           </button>
         </div>
         <div className="mt-8 md:mt-6">
-          <h4>Choose your price</h4>
+          <h4 className="text-white">Choose your price</h4>
           <div className="relative mt-12">
-            <p
-              className="absolute bottom-[50px] flex h-5 w-10 -translate-x-1/2 items-center justify-center rounded-full bg-primary text-xs font-bold text-white md:w-8 md:text-[10px]"
-              style={{ left: (price / 1000) * 100 + "%" }}
-            >
+            <p className="absolute bottom-[50px] flex h-5 w-10 -translate-x-1/2 items-center justify-center rounded-full bg-primary text-xs font-bold text-white md:w-8 md:text-[10px]" style={{ left: (price / 1000) * 100 + "%" }}>
               {price}
             </p>
             <Slider
@@ -94,7 +81,7 @@ const CollectionForm: React.FC<Props> = ({ collection }) => {
               min={1}
               max={1000}
               railStyle={{ height: 10, background: "#EFF0F6" }}
-              trackStyle={{ height: 10, background: "#2B2C78" }}
+              trackStyle={{ height: 10, background: "#ffffff" }}
               handleStyle={{
                 marginTop: -7,
                 width: 24,
@@ -113,40 +100,22 @@ const CollectionForm: React.FC<Props> = ({ collection }) => {
         </div>
         <div className="mt-16 grid grid-cols-2 gap-5 md:mt-12">
           <div>
-            <p className={cx("text-sm font-light text-[#666] md:text-xs")}>
-              Total amount of donations
-            </p>
-            <p className="text-[27px] font-semibold !leading-[1.6] text-primary md:text-xl">
-              2234
-            </p>
+            <p className={cx("text-sm font-light text-[#E5E5E5] md:text-xs")}>Total amount of donations</p>
+            <p className="text-[27px] font-semibold !leading-[1.6] text-white md:text-xl">2234</p>
           </div>
           <div>
-            <p className={cx("text-sm font-light text-[#666] md:text-xs")}>
-              Highest donation
-            </p>
-            <p className="text-[27px] font-semibold !leading-[1.6] text-primary md:text-xl">
-              $1320
-            </p>
+            <p className={cx("text-sm font-light text-[#E5E5E5] md:text-xs")}>Highest donation</p>
+            <p className="text-[27px] font-semibold !leading-[1.6] text-white md:text-xl">$1320</p>
           </div>
           <div>
-            <p className={cx("text-sm font-light text-[#666] md:text-xs")}>
-              Total donors
-            </p>
-            <p className="text-[27px] font-semibold !leading-[1.6] text-primary md:text-xl">
-              1241
-            </p>
+            <p className={cx("text-sm font-light text-[#E5E5E5] md:text-xs")}>Total donors</p>
+            <p className="text-[27px] font-semibold !leading-[1.6] text-white md:text-xl">1241</p>
           </div>
           <div>
-            <p className={cx("text-sm font-light text-[#666] md:text-xs")}>
-              Latest donation
-            </p>
+            <p className={cx("text-sm font-light text-[#E5E5E5] md:text-xs")}>Latest donation</p>
             <div className="flex items-baseline gap-2">
-              <p className="text-[27px] font-semibold !leading-[1.6] text-primary md:text-xl">
-                Jan 31
-              </p>
-              <p className={cx("text-sm font-light text-[#666]")}>
-                11:30 AM EST
-              </p>
+              <p className="text-[27px] font-semibold !leading-[1.6] text-white md:text-xl">Jan 31</p>
+              <p className={cx("text-sm font-light text-[#E5E5E5]")}>11:30 AM EST</p>
             </div>
           </div>
         </div>
